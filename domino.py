@@ -6,6 +6,7 @@ class Domino:
         self.value_1 = value_1       
         self.value_2 = value_2
         self._dot_map = { 
+            0 : "   ",             
             1 : " • ", 
             2 : " : ", 
             3 : "•••", 
