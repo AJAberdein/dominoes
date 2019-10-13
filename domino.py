@@ -1,10 +1,10 @@
 class Domino:
     "A single domino instance"\
     
-    def __init__(self, value_1: str, value_2: str, id: int):
+    def __init__(self, id: int, value_1: str, value_2: str):
+        self.id = id
         self.value_1 = value_1       
         self.value_2 = value_2
-        self.id = id
         self._dot_map = { 
             1 : " • ", 
             2 : " : ", 
@@ -13,6 +13,7 @@ class Domino:
             5 : ":•:", 
             6 : ":::", 
         }
+        
     def __repr__(self) -> str:
         "to-string value of an object"
         return self.show()

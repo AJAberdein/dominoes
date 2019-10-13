@@ -1,3 +1,5 @@
+from domino import Domino
+
 class Hand:
     "A hand of dominos instance"
     
