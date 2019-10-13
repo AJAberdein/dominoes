@@ -2,7 +2,7 @@ class Hand:
     "A hand of dominos instance"
     
     def __init__(self):
-        self.dominoes = [Domino]
+        self.dominoes = [int, Domino]
     
     def add_domino(self, domino: Domino):
         "add a domino to this hand"
