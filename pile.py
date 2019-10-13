@@ -8,10 +8,11 @@ class Pile:
         self.initialize_starting_dominoes()
         
     def initialize_starting_dominoes(self):
+        "creates a new Domino instance for every valid combination and attach them to the Pile"
         index = 0
         for i in range(7):
             for j in range(i+1):
                 index +=1
                 self.dominoes.append({index : Domino(index, i, j) })      
         
-            
+        
