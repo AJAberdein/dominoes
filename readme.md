@@ -1,3 +1,3 @@
 # Dominoes Test for Cars.co.za
 
-A fully functioning CLI game or dominoes for two players.
+A fully functioning CLI game of dominoes for two players.
