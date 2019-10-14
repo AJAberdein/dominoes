@@ -6,9 +6,6 @@ import random
 from pick import pick
 
 
-
-
-
 class Game:
     "The Board State"
     
@@ -49,15 +46,52 @@ class Game:
         self.game_end = False
         p = 0
         while(not self.game_end):
-            self.turn(self.players[p])
-            p = 1 if p == 0 else 0
-        
+            turn_outcome = self.turn(self.players[p])
+            if turn_outcome == 'next':
+                p = 1 if p == 0 else 0
+            if turn_outcome == 'blocked':
+                print('Blocked! players cannot continue')
+                dot_count_1  = self.dot_count((self.players[0]).hand)
+                dot_count_2  = self.dot_count((self.players[1]).hand)
+                print((self.players[0]).name + "'s hand count is " + str(dot_count_1))
+                print((self.players[1]).name + "'s hand count is " + str(dot_count_2))
+
+                if(dot_count_1 > dot_count_2):
+                    print((self.players[0]).name + ' Wins!')
+                else: 
+                    print((self.players[1]).name + ' Wins!')
+                self.game_end = True
+            if turn_outcome == 'domino':
+                print('Domino!')
+                print((self.players[p]).name + ' Wins!')
+                self.game_end = True
+
+    def dot_count(self, hand):
+        count = 0
+        for domino in hand.dominoes.values():                  
+            count += domino.value_1
+            count += domino.value_2
+        return count
+
     def turn(self, player):
-        new_domino = self.pile.take_domino()
-        player.add_domino(new_domino)
-        domino, position = self.make_move(player)
-        self.place_domino(player, domino, position)
-        print(domino)
+        if len(player.hand.dominoes) == 0:
+            return 'domino'
+        if len(self.pile.dominoes) > 0:
+            new_domino = self.pile.take_domino()
+            player.add_domino(new_domino)
+        if self.has_valid_moves(player.hand): 
+            domino, position = self.make_move(player)
+            self.place_domino(player, domino, position)
+        else:
+            print(len(self.pile.dominoes), len(player.hand.dominoes))
+            if len(self.pile.dominoes) == 0:
+                if (not self.has_valid_moves((self.players[0]).hand) and not self.has_valid_moves((self.players[1]).hand)):
+                    return 'blocked'
+            else: 
+                print("No valid moves, draw again.")
+                self.turn(player)
+        return 'next'
+        
         
     def make_move(self, player):
         valid_moves = self.get_valid_moves(player.hand)
@@ -69,6 +103,7 @@ class Game:
     def place_domino(self, player, domino, position):        
         player.remove_domino(domino.id)
         self.board.add_domino(domino, position)
+        print(str(player.name) + " places down domino " +  str(domino))
         
     def get_selection_heading(self, player):
         player_details = str(player.name) + "'s Turn"
@@ -76,6 +111,9 @@ class Game:
         hand = "\n\nHand\n" + str(player.hand)
         title = "\n\nSelect a valid move:\n" 
         return player_details + board + hand + title
+    
+    def has_valid_moves(self, hand):
+        return len(self.get_valid_moves(hand)) > 0
         
     def get_valid_moves(self, hand):
         first = self.board.dominoes[0]
@@ -89,7 +127,10 @@ class Game:
         return moves
     
 
-        
+
+
+
+
         
 
 game = Game()
