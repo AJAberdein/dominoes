@@ -15,4 +15,5 @@ class Player:
         
     def remove_domino(self, domino_id: int):
         "remove a domino from this player's hand"
-        self.hand.remove_domino({domino.id : domino})
+        self.hand.remove_domino(domino_id)
+    

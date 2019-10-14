@@ -5,6 +5,10 @@ from board import Board
 import random
 from pick import pick
 
+
+
+
+
 class Game:
     "The Board State"
     
@@ -40,8 +44,6 @@ class Game:
     def set_starting_tile(self):
         domino = self.pile.take_domino()
         self.board.add_domino(domino)
-        print('BOARD:')
-        print(self.board)
         
     def play(self):
         self.game_end = False
@@ -49,23 +51,28 @@ class Game:
         while(not self.game_end):
             self.turn(self.players[p])
             p = 1 if p == 0 else 0
-            self.game_end = True
         
     def turn(self, player):
-        domino = self.pile.take_domino()
-        player.add_domino(domino)
-        domino = self.make_move(player)
+        new_domino = self.pile.take_domino()
+        player.add_domino(new_domino)
+        domino, position = self.make_move(player)
+        self.place_domino(player, domino, position)
         print(domino)
         
     def make_move(self, player):
         valid_moves = self.get_valid_moves(player.hand)
         move_display = list(map(lambda move : 'PLACE ' + (move["domino"]).show() +  ' ' + move["placement"], valid_moves)) 
         move, index = pick(move_display, self.get_selection_heading(player))
-        return valid_moves[index]
+        player_move = valid_moves[index]
+        return (player_move ['domino'], player_move ['placement'])
+        
+    def place_domino(self, player, domino, position):        
+        player.remove_domino(domino.id)
+        self.board.add_domino(domino, position)
         
     def get_selection_heading(self, player):
         player_details = str(player.name) + "'s Turn"
-        board = "\n\nBoard:\n" + str(self.board)
+        board = "Board:\n" + str(self.board)
         hand = "\n\nHand\n" + str(player.hand)
         title = "\n\nSelect a valid move:\n" 
         return player_details + board + hand + title
@@ -80,8 +87,6 @@ class Game:
             if(domino.value_1 == last.value_2 or domino.value_2 == last.value_2):
                 moves.append({"domino": domino, "placement": "RIGHT"})   
         return moves
-    
-
     
 
         
