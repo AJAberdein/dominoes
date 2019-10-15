@@ -6,7 +6,7 @@ import random
 from pick import pick
 
 
-class Game:
+class Game: 
     "The Board State"
     
     def start(self):
@@ -58,7 +58,7 @@ class Game:
                 print((self.players[0]).name + "'s hand count is " + str(dot_count_1))
                 print((self.players[1]).name + "'s hand count is " + str(dot_count_2))
 
-                if(dot_count_1 > dot_count_2):
+                if(dot_count_1 < dot_count_2):
                     print((self.players[0]).name + ' Wins!')
                 else: 
                     print((self.players[1]).name + ' Wins!')
@@ -114,7 +114,7 @@ class Game:
     def get_selection_heading(self, player):
         "provide information of the game state while a player makes a move"
         player_details = str(player.name) + "'s Turn"
-        board = "Board:\n" + str(self.board)
+        board = "\nBoard:\n" + str(self.board)
         hand = "\n\nHand\n" + str(player.hand)
         title = "\n\nSelect a valid move:\n" 
         return player_details + board + hand + title
