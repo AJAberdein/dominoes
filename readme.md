@@ -8,8 +8,8 @@ python 3
 
 ## Installing
 
-Just Pull the repo
-There are no dependencies to install
+Just pull the repo,
+there are no dependencies to install
 
 ## Running CLI
 
