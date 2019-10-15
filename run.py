@@ -39,10 +39,12 @@ class Game:
         print('\n')
 
     def set_starting_tile(self):
+        "sets the starting tile on the board"
         domino = self.pile.take_domino()
         self.board.add_domino(domino)
         
     def play(self):
+        "start the game, manages turns and win state"
         self.game_end = False
         p = 0
         while(not self.game_end):
@@ -67,6 +69,7 @@ class Game:
                 self.game_end = True
 
     def dot_count(self, hand):
+        "counts the value of a players hand to tally up a score"
         count = 0
         for domino in hand.dominoes.values():                  
             count += domino.value_1
@@ -74,6 +77,7 @@ class Game:
         return count
 
     def turn(self, player):
+        "a single turn. validates what the turn outcome is "
         if len(player.hand.dominoes) == 0:
             return 'domino'
         if len(self.pile.dominoes) > 0:
@@ -94,18 +98,21 @@ class Game:
         
         
     def make_move(self, player):
+        "a player move selection pool"
         valid_moves = self.get_valid_moves(player.hand)
         move_display = list(map(lambda move : 'PLACE ' + (move["domino"]).show() +  ' ' + move["placement"], valid_moves)) 
         move, index = pick(move_display, self.get_selection_heading(player))
         player_move = valid_moves[index]
         return (player_move ['domino'], player_move ['placement'])
         
-    def place_domino(self, player, domino, position):        
+    def place_domino(self, player, domino, position):   
+        "placement of a player's domino onto the board"     
         player.remove_domino(domino.id)
         self.board.add_domino(domino, position)
         print(str(player.name) + " places down domino " +  str(domino))
         
     def get_selection_heading(self, player):
+        "provide information of the game state while a player makes a move"
         player_details = str(player.name) + "'s Turn"
         board = "Board:\n" + str(self.board)
         hand = "\n\nHand\n" + str(player.hand)
@@ -113,9 +120,11 @@ class Game:
         return player_details + board + hand + title
     
     def has_valid_moves(self, hand):
+        "validates if a player can maka a valid move"
         return len(self.get_valid_moves(hand)) > 0
         
     def get_valid_moves(self, hand):
+        "returns a players valid moves"
         first = self.board.dominoes[0]
         last = self.board.dominoes[-1]
         moves = []
@@ -125,13 +134,7 @@ class Game:
             if(domino.value_1 == last.value_2 or domino.value_2 == last.value_2):
                 moves.append({"domino": domino, "placement": "RIGHT"})   
         return moves
-    
 
-
-
-
-
-        
 
 game = Game()
 game.start()
